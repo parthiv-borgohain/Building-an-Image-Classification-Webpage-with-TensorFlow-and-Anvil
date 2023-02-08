@@ -1,0 +1,39 @@
+from ._anvil_designer import Form1Template
+from anvil import *
+import anvil.server
+
+class Form1(Form1Template):
+  def _init_(self, **properties):
+    # Set Form properties and Data Bindings.
+    self.init_components(**properties)
+
+    # Any code you write here will run before the form opens.
+
+
+  def file_loader_1_change(self, file, **event_args):
+    return_val, fetch_array = anvil.server.call('get_result',file)
+    if fetch_array=="Error":
+      alert("Incorrect file uploaded. Please upload a .csv file")
+    else:
+      self.file_loader_1.visible=False
+      self.label_3.text = "Below is the uploaded image"
+      self.label_x.text = "Image Uploaded Successfully!!"
+      self.image_2.source = anvil.server.call('make_plot',fetch_array)
+  
+    if return_val:
+      self.label_4.visible = True
+      self.label_4.text = "The predicted number is " + str(return_val)+" 
+      self.file_loader_1.clear()
+  
+    pass
+
+  def text_box_1_pressed_enter(self, **event_args):
+    """This method is called when the user presses Enter in this text box"""
+    pass
+
+  def link_1_click(self, **event_args):
+    """This method is called when the link is clicked"""
+    pass
+
+
+  
